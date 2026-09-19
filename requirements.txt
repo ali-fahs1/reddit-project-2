@@ -1,0 +1,11 @@
+
+psycopg[binary]
+python-dotenv
+langchain
+langchain-community
+langchain-brightdata
+langchain[openai]
+langchain[google-genai]
+langgraph
+redis
+import json
