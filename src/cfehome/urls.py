@@ -15,8 +15,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
+# from snapshots.views import snapshot_webhook_handler, reddit_post_webhook_handler
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("qstash/webhook/", include("django_qstash.urls")),
+    # path("webhooks/bd/scrape/", snapshot_webhook_handler),
+    # path("webhooks/bd/reddit/", reddit_post_webhook_handler),
 ]

@@ -28,8 +28,13 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DJANGO_DEBUG")
 
-ALLOWED_HOSTS = []
 
+ALLOWED_HOSTS = ['127.0.0.1']
+CSRF_TRUSTED_ORIGINS=['http://127.0.0.1']
+
+if DEBUG:
+	ALLOWED_HOSTS.append(".hungrypy.com")
+	CSRF_TRUSTED_ORIGINS.append("https://*.hungrypy.com")
 
 # Application definition
 
@@ -40,6 +45,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # third party
+    "django_celery_beat",
+    "django_celery_results",
+    "django_qstash",
+    "django_qstash.results",
+    "django_qstash.schedules",
+    # internal
+    'blog',
+    'reddit',
+    "snapshots"
+    
+
 ]
 
 MIDDLEWARE = [
@@ -81,6 +98,29 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+DATABASE_URL=os.environ.get("DATABASE_URL") or ""
+if DATABASE_URL and DATABASE_URL != "":
+    import dj_database_url
+
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=300,
+            conn_health_checks=True,
+        )
+    }
+REDIS_URL = os.environ.get("REDIS_URL") or ""
+
+if REDIS_URL and REDIS_URL != "":
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": f"{REDIS_URL}",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        }
+    }
 
 
 # Password validation
@@ -118,3 +158,43 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+###### CELERY CONFIG
+# save Celery task results in Django's database
+CELERY_RESULT_BACKEND = "django-db"
+
+# This configures Redis as the datastore between Django + Celery
+CELERY_BROKER_URL = REDIS_URL
+# if you out to use os.environ the config is:
+# CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_REDIS_URL', 'redis://localhost:6379')
+
+
+# this allows you to schedule items in the Django admin.
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
+
+
+
+
+
+
+
+
+QSTASH_URL=os.environ.get("QSTASH_URL")
+QSTASH_TOKEN=os.environ.get("QSTASH_TOKEN")
+QSTASH_CURRENT_SIGNING_KEY=os.environ.get("QSTASH_CURRENT_SIGNING_KEY")
+QSTASH_NEXT_SIGNING_KEY=os.environ.get("QSTASH_NEXT_SIGNING_KEY")
+DJANGO_QSTASH_DOMAIN=os.environ.get("DJANGO_QSTASH_DOMAIN")
+DJANGO_QSTASH_WEBHOOK_PATH=os.environ.get("DJANGO_QSTASH_WEBHOOK_PATH") or "/qstash/webhook/"
+
+
+
+
+
+
+
+APIFY_API_KEY=os.environ.get("APIFY_API_KEY")
+SERPAPI_API_KEY=None

@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      - POSTGRES_DB=pgdb
+      - POSTGRES_USER=pguser
+      - POSTGRES_PASSWORD=pgpassword
+      - DATABASE_URL=postgres://pguser:pgpassword@localhost:5480/pgdb
+    ports:
+      - 5480:5432
+    volumes:
+      - pgdata:/var/lib/postgresql
+  redis-db:
+    image: redis:latest
+    # environment:
+    #    # - REDIS_DOCKER_URL: redis://redis-db:6379/
+    #    - REDIS_LOCAL_URL: redis://localhost:6380/
+    ports:
+      - 6380:6379
+    volumes:
+      - redisdata:/data
+
+volumes:
+  pgdata:
+  redisdata:

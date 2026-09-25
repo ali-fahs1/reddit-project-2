@@ -8,4 +8,12 @@ langchain[openai]
 langchain[google-genai]
 langgraph
 redis
-import json
+apify_client
+Django
+Celery 
+Django-qstash
+django-celery-results
+django-celery-beat
+dj-database-url
+Django-redis
+dj_database_url
