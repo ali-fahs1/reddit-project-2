@@ -29,13 +29,18 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 DEBUG = os.environ.get("DJANGO_DEBUG")
 
 
-ALLOWED_HOSTS = ['127.0.0.1']
-CSRF_TRUSTED_ORIGINS=['http://127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000', 'http://localhost:8000']
 
 if DEBUG:
-	ALLOWED_HOSTS.append(".hungrypy.com")
-	CSRF_TRUSTED_ORIGINS.append("https://*.hungrypy.com")
-
+    # ALLOWED_HOSTS with a leading dot matches both ali-fahs.live and *.ali-fahs.live
+    ALLOWED_HOSTS.extend(['.ali-fahs.live', 'ali-fahs.live'])
+    
+    # CSRF_TRUSTED_ORIGINS requires explicit root + wildcard schemes
+    CSRF_TRUSTED_ORIGINS.extend([
+        'https://ali-fahs.live',
+        'https://*.ali-fahs.live',
+    ])
 # Application definition
 
 INSTALLED_APPS = [
@@ -54,7 +59,9 @@ INSTALLED_APPS = [
     # internal
     'blog',
     'reddit',
-    "snapshots"
+    "snapshots",
+    "queries",
+    "topics"
     
 
 ]
@@ -197,4 +204,13 @@ DJANGO_QSTASH_WEBHOOK_PATH=os.environ.get("DJANGO_QSTASH_WEBHOOK_PATH") or "/qst
 
 
 APIFY_API_KEY=os.environ.get("APIFY_API_KEY")
-SERPAPI_API_KEY=None
+
+
+APIFY_ACTOR_ID = os.environ.get("APIFY_ACTOR_ID")
+
+
+APIFY_WEBHOOK_HANDLER__SECRET_KEY=os.environ.get("APIFY_WEBHOOK_HANDLER__SECRET_KEY")
+
+
+SERPER_API_KEY=os.environ.get("SERPER_API_KEY")
+GEMINI_API_KEY=os.environ.get("GEMINI_API_KEY")

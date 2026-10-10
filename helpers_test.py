@@ -11,11 +11,14 @@ django.setup()
 
 
 from helpers import bd
-from snapshots.tasks import perform_reddit_scrape_task
+from snapshots.tasks import perform_reddit_scrape_task,get_run_progress_instance_task
 
-run_id=perform_reddit_scrape_task(
-    subreddit_name='Python',
-    max_posts=1,
+run_id=bd.perform_scrape_run(
+    subreddit_url='https://www.reddit.com/r/Python/',
+    max_posts=3,
+    # progress_countdown=1,
+    use_webhook=True,
 )
 
-print(run_id)
+
+

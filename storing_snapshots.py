@@ -17,7 +17,6 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cfehome.settings')
 # 4. Initialize Django
 django.setup()
 from snapshots.models import apifySnapshot
-APIFY_SCRAPE_SORT_OPTIONS = ["Today", "This Week", "This Month", "This Year", "All Time"]
 
 # Initialize the ApifyClient with your API token
 client = ApifyClient("apify_api_fegLn4LkdqUz3HUveHc5UUf2au09Wz4df352")

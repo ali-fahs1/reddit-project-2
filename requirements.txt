@@ -6,6 +6,7 @@ langchain-community
 langchain-brightdata
 langchain[openai]
 langchain[google-genai]
+google-genai
 langgraph
 redis
 apify_client
@@ -16,4 +17,7 @@ django-celery-results
 django-celery-beat
 dj-database-url
 Django-redis
-dj_database_url
+
+langchain-core
+langchain-google-community
+google-search-results
